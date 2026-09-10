@@ -606,7 +606,7 @@ Example response:
         "accountNumber": "2441234567",
         "accountName": "John Doe",
         "bankCode": "244",
-        "bankName": "MART_TECH",
+        "bankName": "MAR_Bank",
         "openingBalance": 15000
     }
 }
