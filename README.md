@@ -221,7 +221,7 @@ This provides application-level and database-level protection against multiple a
 ### 1. Clone the Repository
 
 ```bash
-git clone <YOUR-GITHUB-REPOSITORY-URL>
+git clone <[YOUR-GITHUB-REPOSITORY-URL](https://github.com/EKENEMARTINS/MART_TECH-Banking-System-API.git)>
 ```
 
 Move into the application directory:
