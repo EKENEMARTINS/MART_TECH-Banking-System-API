@@ -1,0 +1,469 @@
+{
+  "info": {
+    "_postman_id": "7c6dc168-7029-4d96-bf51-3d495303b4e4",
+    "name": "MART_TECH Banking System API",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57024712",
+    "_collection_link": "https://go.postman.co/collection/57024712-7c6dc168-7029-4d96-bf51-3d495303b4e4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Onboarding",
+      "item": [
+        {
+          "name": "BVN Onboarding",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bvn\": \"00000000000\"\r\n}\r\n//\"Use any new simulated 11-digit numbers that has not previously been registered with NIBSS by Phoenix. to generate bvn here\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/onboarding/bvn",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "onboarding",
+                "bvn"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "NIN Onboarding",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nin\": \"00000000000\"\r\n}\r\n\r\n//Use any new simulated 11-digit numbers that has not previously been registered with NIBSS by Phoenix. to generate nin here",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/onboarding/nin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "onboarding",
+                "nin"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"Enter firstName\",\r\n    \"lastName\": \"Enter lastName\",\r\n    \"email\": \"firstName@example.com\",\r\n    \"password\": \"1234567890\",\r\n    \"phone\": \"09000000000\",\r\n    \"dob\": \"0000-00-00\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "if (response.token) {\r",
+                  "    pm.collectionVariables.set(\r",
+                  "        \"customerToken\",\r",
+                  "        response.token\r",
+                  "    );\r",
+                  "}\r",
+                  "pm.test(\"Login successful\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"JWT returned\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "    pm.expect(response.token).to.exist;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"firstname@example.com\",\r\n    \"password\": \"1234567890\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Transfer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "if (response.transaction?.transactionId) {\r",
+                  "    pm.collectionVariables.set(\r",
+                  "        \"transactionId\",\r",
+                  "        response.transaction.transactionId\r",
+                  "    );\r",
+                  "}\r",
+                  "\r",
+                  "pm.test(\"Transfer successful\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Transaction reference returned\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(\r",
+                  "        response.transaction.transactionId\r",
+                  "    ).to.exist;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"to\": \"{{recipientAccount}}\",\r\n    \"amount\": 1000\r\n}\r\n\r\n//Copy and paste the recipient account number in the recipientAccount variable section of the MART_TECH Banking System collection",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transaction/transfer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transaction",
+                "transfer"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Transaction History",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"History retrieved\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Transactions is an array\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(\r",
+                  "        response.transactions\r",
+                  "    ).to.be.an(\"array\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transaction/history",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transaction",
+                "history"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Transaction Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transaction/status/{{transactionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "transaction",
+                "status",
+                "{{transactionId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "Create Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "if (response.account?.accountNumber) {\r",
+                  "    pm.collectionVariables.set(\r",
+                  "        \"accountNumber\",\r",
+                  "        response.account.accountNumber\r",
+                  "    );\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/account/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "My Account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/account/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Balance",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Balance request successful\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Balance exists\", function () {\r",
+                  "    const response = pm.response.json();\r",
+                  "    pm.expect(response.balance).to.be.a(\"number\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/account/balance",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account",
+                "balance"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Name Enquiry",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/account/name-enquiry/{{recipientAccount}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account",
+                "name-enquiry",
+                "{{recipientAccount}}"
+              ]
+            },
+            "description": "Copy and paste the recipient account number in the recipientAccount variable section of the MART_TECH Banking System collection"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{customerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "customerToken",
+      "value": ""
+    },
+    {
+      "key": "accountNumber",
+      "value": ""
+    },
+    {
+      "key": "recipientAccount",
+      "value": ""
+    },
+    {
+      "key": "transactionId",
+      "value": ""
+    }
+  ]
+}
